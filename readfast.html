@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>ReadFast</title>
+    <script type='text/javascript' src='http://code.jquery.com/jquery-1.7.1.js'></script>
+    <link rel="stylesheet" type="text/css" href="/css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="/css/result-light.css">
+
+    <style type='text/css'>
+    body {
+        font-family:"Lucida Console";
+        font-size:20pt;
+    }
+    </style>
+
+    <script type='text/javascript'>
+        // TODO
+        // * make orp charcter red
+        // * print orp character in same position every time
+        // * stop
+        // * pause
+        $(function() {
+            $("#start").click( function() {
+                var text = $("#words").val();
+                var res = text.split(" ");
+                var i = 0;
+                var len = 0;
+                var orp = 0;
+
+                var millisecs = parseInt(1000/($("#wpm").val()/60));
+                setInterval(function() {
+                    len=res[i].length;
+                    orp=Math.floor(len/2);
+
+                    $('#badge').text(res[i]); // parseInt($badge.text())+1
+                    i=i+1;
+                }, millisecs);
+            });
+        });
+    </script>
+</head>
+<body>
+    <center><span id="badge">0</span></center>
+    WPM:<BR>
+    <input type="textbox" id="wpm" value=""></input><BR>
+    TEXT:<BR>
+    <textarea id="words" rows="10" cols="50">
+    At w3schools.com you will learn how to make a website. We offer free tutorials in all web development technologies.
+    </textarea><BR>
+    <button id="start">Start</button>
+</body>
+</html>
