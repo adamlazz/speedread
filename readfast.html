@@ -4,12 +4,10 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <title>ReadFast</title>
     <script type='text/javascript' src='http://code.jquery.com/jquery-1.7.1.js'></script>
-    <link rel="stylesheet" type="text/css" href="/css/normalize.css">
-    <link rel="stylesheet" type="text/css" href="/css/result-light.css">
 
     <style type='text/css'>
     body {
-        font-family: "Courier New";
+        font-family: "Lucida Console";
         font-size: 20pt;
     }
     #reader_pre {
@@ -39,10 +37,17 @@
         // * restart. Currently flashes out of control
         // * error handling
         //      * don't count punctuation or " or '
-        //      * non digits in wpm field
         $(function() {
             $("#start").click( function() {
-                var wpm=$("#wpm").val();
+                var wpm=parseInt($("#wpm").val());
+                if (!wpm) {
+                    $("#wpmwarn").text("Enter a number.");
+                    return;
+                }
+                else {
+                    $("#wpmwarn").text("");
+                };
+
                 var text = $("#words").val();
                 var res = text.split(" ");
                 var i = 0;
@@ -50,9 +55,11 @@
                 var orp = 0;
 
                 var millisecs = parseInt(1000/(wpm/60)); // wpm to milliseconds
-                setInterval(function() {
+                (function readingLoop() {
                     $('#reader_pre').html('<div id="orp"></div>');
                     $('#reader_post').html('');
+
+                    // string processing for punctuation
 
                     len = res[i].length;
                     if (len == 1) {
@@ -76,18 +83,19 @@
                     };
 
                     i=i+1;
-                }, millisecs);
+                    setTimeout(readingLoop, millisecs);
+                })();
             });
         });
     </script>
 </head>
 <body>
-<div id="reader_pre">Welcome to READFAST<span id="orp"></span></div><div id="reader_post"></div>
-<div class="clear"></div>
-WPM:<BR>
-<input type="textbox" id="wpm" value="50"></input><BR>
-TEXT:<BR>
-<textarea id="words" rows="15" cols="50">Using READFAST you can read fast wow thats amazing I never knew you could do something so cool thats really cool</textarea><BR>
-<button id="start">Start</button>&nbsp;<button id="pause">Pause</button>&nbsp;<button id="stop">Stop</button>
+    <div id="reader_pre">Welcome to READFAST<span id="orp"></span></div><div id="reader_post"></div>
+    <div class="clear"></div>
+    WPM:<BR>
+    <input type="textbox" id="wpm" value="50"></input><div id="wpmwarn"></div><BR>
+    TEXT:<BR>
+    <textarea id="words" rows="15" cols="50">Using READFAST you can read fast wow thats amazing I never knew you could do something so cool thats really cool</textarea><BR>
+    <button id="start">Start</button>&nbsp;<button id="pause">Pause</button>&nbsp;<button id="stop">Stop</button>
 </body>
 </html>
