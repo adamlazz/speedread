@@ -12,18 +12,30 @@
         font-family: "Courier New";
         font-size: 20pt;
     }
-    .orp {
-        color:red;
+    #reader_pre {
+        width:50%;
+        float:left;
+        text-align: right;
+    }
+    #reader_post{
+        width: 50%;
+        float:right;
+    }
+    #orp {
+        color: red;
+        float:right;
+    }
+    .clear {
+        clear:both;
     }
     </style>
 
     <script type='text/javascript'>
         // TODO
-        // * print orp character in same position every time
         // * stop
         // * pause
         // * error handling
-        //      * don't count punctuation
+        //      * don't count punctuation or " or '
         //      * non digits in wpm field
         $(function() {
             $("#start").click( function() {
@@ -36,19 +48,30 @@
 
                 var millisecs = parseInt(1000/(wpm/60)); // wpm to milliseconds
                 setInterval(function() {
-                    $('#reader').html('<span id="orp"></span>');
+                    $('#reader_pre').html('<div id="orp"></div>');
+                    $('#reader_post').html('');
 
-                    len=res[i].length;
-                    if (len == 1) { orp=0; } else { orp=Math.floor(len/2)-1; };
+                    len = res[i].length;
+                    if (len == 1) {
+                        orp = 0;
+                    }
+                    else {
+                        orp = Math.floor(len/2)-1;
+                    };
 
-                    $('#orp').text(res[i].charAt(orp)).css('color', 'red');
+                    // print orp
+                    $('#orp').text(res[i].charAt(orp));
 
+                    // print characters after orp
                     for (var j = orp+1; j <= len; j++) {
-                        $('#reader').append(res[i].charAt(j));
+                        $('#reader_post').append(res[i].charAt(j));
                     };
+
+                    // print characters before orp
                     for (var k = orp-1; k >= 0; k--) {
-                        $('#reader').prepend(res[i].charAt(k));
+                        $('#reader_pre').prepend(res[i].charAt(k));
                     };
+
                     i=i+1;
                 }, millisecs);
             });
@@ -56,12 +79,13 @@
     </script>
 </head>
 <body>
-    <center><span id="reader"><span id="orp">Welcome to READFAST</span></span></center>
-    WPM:<BR>
-    <input type="textbox" id="wpm" value="100"></input><BR>
-    TEXT:<BR>
-    <textarea id="words" rows="10" cols="50">At w3schools.com you will learn how to make a website. We offer free tutorials in all web development technologies.
-    </textarea><BR>
-    <button id="start">Start</button>
+<div id="reader_pre">asdf<span id="orp">WELCOME</span></div><div id="reader_post">asdf</div>
+<div class="clear"></div>
+<hr>
+WPM:<BR>
+<input type="textbox" id="wpm" value="50"></input><BR>
+TEXT:<BR>
+<textarea id="words" rows="15" cols="50">Using READFAST you can read fast wow thats amazing I never knew you could do something so cool thats really cool</textarea><BR>
+<button id="start">Start</button>&nbsp;<button id="pause">Pause</button>&nbsp;<button id="stop">Stop</button>
 </body>
 </html>
