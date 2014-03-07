@@ -10,6 +10,10 @@
         font-family: "Lucida Console";
         font-size: 20pt;
     }
+    #welcome {
+        color:red;
+        text-align:center;
+    }
     #reader_pre {
         height:50px;
         width:50%;
@@ -34,11 +38,11 @@
         // TODO
         // * stop
         // * pause
-        // * restart. Currently flashes out of control
-        // * error handling
-        //      * don't count punctuation or " or '
+        // * restart after pause
+        // * don't count punctuation or " or '
         $(function() {
             $("#start").click( function() {
+                $("#welcome").text("");
                 var wpm=parseInt($("#wpm").val());
                 if (!wpm) {
                     $("#wpmwarn").text("Enter a number.");
@@ -90,7 +94,8 @@
     </script>
 </head>
 <body>
-    <div id="reader_pre">Welcome to READFAST<span id="orp"></span></div><div id="reader_post"></div>
+    <div id="welcome">Welcome to READFAST</div>
+    <div id="reader_pre"><span id="orp"></span></div><div id="reader_post"></div>
     <div class="clear"></div>
     WPM:<BR>
     <input type="textbox" id="wpm" value="50"></input><div id="wpmwarn"></div><BR>
