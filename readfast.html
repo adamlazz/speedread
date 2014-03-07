@@ -9,31 +9,46 @@
 
     <style type='text/css'>
     body {
-        font-family:"Lucida Console";
-        font-size:20pt;
+        font-family: "Courier New";
+        font-size: 20pt;
+    }
+    .orp {
+        color:red;
     }
     </style>
 
     <script type='text/javascript'>
         // TODO
-        // * make orp charcter red
         // * print orp character in same position every time
         // * stop
         // * pause
+        // * error handling
+        //      * don't count punctuation
+        //      * non digits in wpm field
         $(function() {
             $("#start").click( function() {
+                var wpm=$("#wpm").val();
                 var text = $("#words").val();
                 var res = text.split(" ");
                 var i = 0;
                 var len = 0;
                 var orp = 0;
 
-                var millisecs = parseInt(1000/($("#wpm").val()/60));
+                var millisecs = parseInt(1000/(wpm/60)); // wpm to milliseconds
                 setInterval(function() {
-                    len=res[i].length;
-                    orp=Math.floor(len/2);
+                    $('#reader').html('<span id="orp"></span>');
 
-                    $('#badge').text(res[i]); // parseInt($badge.text())+1
+                    len=res[i].length;
+                    if (len == 1) { orp=0; } else { orp=Math.floor(len/2)-1; };
+
+                    $('#orp').text(res[i].charAt(orp)).css('color', 'red');
+
+                    for (var j = orp+1; j <= len; j++) {
+                        $('#reader').append(res[i].charAt(j));
+                    };
+                    for (var k = orp-1; k >= 0; k--) {
+                        $('#reader').prepend(res[i].charAt(k));
+                    };
                     i=i+1;
                 }, millisecs);
             });
@@ -41,12 +56,11 @@
     </script>
 </head>
 <body>
-    <center><span id="badge">0</span></center>
+    <center><span id="reader"><span id="orp">Welcome to READFAST</span></span></center>
     WPM:<BR>
-    <input type="textbox" id="wpm" value=""></input><BR>
+    <input type="textbox" id="wpm" value="100"></input><BR>
     TEXT:<BR>
-    <textarea id="words" rows="10" cols="50">
-    At w3schools.com you will learn how to make a website. We offer free tutorials in all web development technologies.
+    <textarea id="words" rows="10" cols="50">At w3schools.com you will learn how to make a website. We offer free tutorials in all web development technologies.
     </textarea><BR>
     <button id="start">Start</button>
 </body>
