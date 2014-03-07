@@ -13,11 +13,13 @@
         font-size: 20pt;
     }
     #reader_pre {
+        height:50px;
         width:50%;
         float:left;
         text-align: right;
     }
     #reader_post{
+        height:50px;
         width: 50%;
         float:right;
     }
@@ -34,6 +36,7 @@
         // TODO
         // * stop
         // * pause
+        // * restart. Currently flashes out of control
         // * error handling
         //      * don't count punctuation or " or '
         //      * non digits in wpm field
@@ -79,9 +82,8 @@
     </script>
 </head>
 <body>
-<div id="reader_pre">asdf<span id="orp">WELCOME</span></div><div id="reader_post">asdf</div>
+<div id="reader_pre">Welcome to READFAST<span id="orp"></span></div><div id="reader_post"></div>
 <div class="clear"></div>
-<hr>
 WPM:<BR>
 <input type="textbox" id="wpm" value="50"></input><BR>
 TEXT:<BR>
