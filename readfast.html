@@ -3,14 +3,15 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <title>ReadFast</title>
-    <script type='text/javascript' src='http://code.jquery.com/jquery-1.7.1.js'></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.js"></script>
 
-    <style type='text/css'>
+    <style type="text/css">
     body {
-        font-family: "Lucida Console";
+        font-family: "Times New Roman";
         font-size: 20pt;
     }
     #welcome {
+        height:50px;
         color:red;
         text-align:center;
     }
@@ -29,68 +30,68 @@
         color: red;
         float:right;
     }
+    .btn {
+        width: 100px;
+        height: 50px;
+    }
     .clear {
         clear:both;
     }
     </style>
 
-    <script type='text/javascript'>
-        // TODO
-        // * stop
-        // * pause
-        // * restart after pause
-        // * don't count punctuation or " or '
-        $(function() {
-            $("#start").click( function() {
-                $("#welcome").text("");
-                var wpm=parseInt($("#wpm").val());
-                if (!wpm) {
-                    $("#wpmwarn").text("Enter a number.");
-                    return;
+    <script type="text/javascript">
+    $(function() {
+        $("#start").click( function() {
+            $("#welcome").text("");
+            var wpm=parseInt($("#wpm").val());
+            if (!wpm) {
+                $("#wpmwarn").text("Enter a number.");
+                return;
+            }
+            else {
+                $("#wpmwarn").text("");
+            };
+
+            var text = $("#words").val();
+            text = text.replace(/\n/g, " ");
+            var res = text.split(" ");
+            var i = 0;
+            var len = 0;
+            var orp = 0;
+
+            var millisecs = parseInt(1000/(wpm/60)); // wpm to milliseconds
+            (function readingLoop() {
+                $("#reader_pre").html('<div id="orp"></div>');
+                $("#reader_post").html("");
+
+                // string processing for punctuation
+
+                len = res[i].length;
+                if (len == 1) {
+                    orp = 0;
                 }
                 else {
-                    $("#wpmwarn").text("");
+                    orp = Math.floor(len/2)-1;
                 };
 
-                var text = $("#words").val();
-                var res = text.split(" ");
-                var i = 0;
-                var len = 0;
-                var orp = 0;
+                // print orp
+                $("#orp").text(res[i].charAt(orp));
 
-                var millisecs = parseInt(1000/(wpm/60)); // wpm to milliseconds
-                (function readingLoop() {
-                    $('#reader_pre').html('<div id="orp"></div>');
-                    $('#reader_post').html('');
+                // print characters after orp
+                for (var j = orp+1; j <= len; j++) {
+                    $("#reader_post").append(res[i].charAt(j));
+                };
 
-                    // string processing for punctuation
+                // print characters before orp
+                for (var k = orp-1; k >= 0; k--) {
+                    $("#reader_pre").prepend(res[i].charAt(k));
+                };
 
-                    len = res[i].length;
-                    if (len == 1) {
-                        orp = 0;
-                    }
-                    else {
-                        orp = Math.floor(len/2)-1;
-                    };
-
-                    // print orp
-                    $('#orp').text(res[i].charAt(orp));
-
-                    // print characters after orp
-                    for (var j = orp+1; j <= len; j++) {
-                        $('#reader_post').append(res[i].charAt(j));
-                    };
-
-                    // print characters before orp
-                    for (var k = orp-1; k >= 0; k--) {
-                        $('#reader_pre').prepend(res[i].charAt(k));
-                    };
-
-                    i=i+1;
-                    setTimeout(readingLoop, millisecs);
-                })();
-            });
+                i=i+1;
+                setTimeout(readingLoop, millisecs);
+            })();
         });
+    });
     </script>
 </head>
 <body>
@@ -98,9 +99,9 @@
     <div id="reader_pre"><span id="orp"></span></div><div id="reader_post"></div>
     <div class="clear"></div>
     WPM:<BR>
-    <input type="textbox" id="wpm" value="50"></input><div id="wpmwarn"></div><BR>
+    <input type="textbox" id="wpm" value="400"></input><div id="wpmwarn"></div><BR>
     TEXT:<BR>
     <textarea id="words" rows="15" cols="50">Using READFAST you can read fast wow thats amazing I never knew you could do something so cool thats really cool</textarea><BR>
-    <button id="start">Start</button>&nbsp;<button id="pause">Pause</button>&nbsp;<button id="stop">Stop</button>
+    <button id="start" class="btn">Start</button>
 </body>
 </html>
